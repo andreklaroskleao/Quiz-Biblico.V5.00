@@ -1,0 +1,1 @@
+const CACHE='jovens-palavra-v3';const ASSETS=['/','/index.html','/src/css/styles.css','/src/js/app.js','/src/data/questions.js','/assets/icons/logo.svg'];self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).catch(()=>{})));self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});

@@ -1,0 +1,15 @@
+{
+  "name": "Jovens na Palavra",
+  "short_name": "JFA Quiz",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#081323",
+  "theme_color": "#081323",
+  "icons": [
+    {
+      "src": "/assets/icons/logo.svg",
+      "sizes": "96x96",
+      "type": "image/svg+xml"
+    }
+  ]
+}
