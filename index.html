@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#081323" />
+  <meta name="description" content="Jovens na Palavra - Desafio Bíblico JFA com quiz, missões, salas, campeonatos, classificação, amigos e perfil." />
+  <title>Jovens na Palavra | Desafio Bíblico JFA</title>
+  <link rel="manifest" href="assets/pwa/manifest.webmanifest" />
+  <link rel="stylesheet" href="src/css/styles.css" />
+</head>
+<body>
+  <div id="toast" aria-live="polite"></div>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar" aria-label="Menu principal">
+      <a class="brand" href="#home" data-route="home" aria-label="Ir para o início">
+        <img src="assets/icons/logo.svg" alt="" />
+        <span><strong>Jovens na Palavra</strong><small>Desafio Bíblico JFA</small></span>
+      </a>
+      <nav class="nav" id="nav">
+        <button class="nav-item active" data-route="home">Início</button>
+        <button class="nav-item" data-action="solo-modal">Jogar Quiz Solo</button>
+        <button class="nav-item" data-route="journey">Jornada Bíblica</button>
+        <button class="nav-item" data-action="room-modal">Desafio entre Irmãos</button>
+        <button class="nav-item" data-route="tournaments">Campeonatos</button>
+        <button class="nav-item" data-route="review">Revisar Erros</button>
+        <button class="nav-item" data-route="missions">Missões</button>
+        <button class="nav-item" data-route="ranking">Classificação Geral</button>
+        <button class="nav-item" data-route="friends">Amigos e Convites</button>
+        <button class="nav-item" data-route="profile">Meu Perfil</button>
+        <button class="nav-item admin-only hidden" data-route="admin">Administração</button>
+      </nav>
+      <div class="side-note">
+        <span class="tag">Base JFA</span>
+        <p>Referências bíblicas em João Ferreira de Almeida e explicações próprias.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn mobile-only" id="menuBtn" aria-label="Abrir menu">☰</button>
+        <div class="title-block"><small id="viewKicker">Bem-vindo</small><h1 id="viewTitle">Jovens na Palavra</h1></div>
+        <div class="top-actions">
+          <button class="notification-btn" id="notificationsBtn" aria-label="Abrir notificações">🔔<span id="notificationCount" class="badge hidden">0</span></button>
+          <button class="ghost install hidden" id="installBtn">Instalar</button>
+          <div id="authArea"></div>
+        </div>
+      </header>
+
+      <section id="authGate" class="auth-gate">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <span class="tag">AT + NT • 1500 perguntas • JFA</span>
+            <h2>Estudo bíblico com experiência de app moderno.</h2>
+            <p>Quiz solo, missões, jornada por livros, desafios entre irmãos, campeonatos, amigos, títulos, molduras e classificação.</p>
+            <div class="hero-actions">
+              <button class="primary" id="googleLoginBtn">Entrar com Google</button>
+              <button class="secondary" id="toggleEmailBtn">Criar / entrar com e-mail</button>
+            </div>
+          </div>
+          <div class="hero-art"><img src="assets/icons/hero.svg" alt="Ilustração de livro bíblico" /></div>
+        </div>
+        <form id="emailForm" class="email-form hidden">
+          <h3>Acesso por e-mail</h3>
+          <label>Nome público <input id="displayNameInput" autocomplete="name" placeholder="Ex: André" /></label>
+          <label>E-mail <input id="emailInput" type="email" autocomplete="email" required /></label>
+          <label>Senha <input id="passwordInput" type="password" autocomplete="current-password" minlength="6" required /></label>
+          <div class="form-actions"><button type="button" class="primary" id="emailCreateBtn">Criar conta</button><button type="button" class="secondary" id="emailLoginBtn">Entrar</button></div>
+          <p id="authMessage" class="muted"></p>
+        </form>
+      </section>
+
+      <section id="appContent" class="content hidden">
+        <section class="view active" id="homeView">
+          <div class="dashboard">
+            <article class="panel hero-panel span-2">
+              <div><span class="tag">Paz de Deus</span><h2 id="welcomeName">Vamos estudar?</h2><p>Escolha um modo, acompanhe sua evolução e convide amigos para desafios da mocidade.</p></div>
+              <div class="quick-actions"><button class="primary" data-action="solo-modal">Começar quiz</button><button class="secondary" data-action="room-modal">Criar sala</button><button class="ghost" data-route="journey">Jornada Bíblica</button></div>
+            </article>
+            <article class="panel stat"><span>Pontos</span><strong id="statPoints">0</strong><small>Total acumulado</small></article>
+            <article class="panel stat"><span>Nível</span><strong id="statLevel">1</strong><small id="statXp">0 XP</small></article>
+            <article class="panel stat"><span>Acerto</span><strong id="statAccuracy">0%</strong><small id="statAnswered">0 perguntas</small></article>
+            <article class="panel span-2"><div class="panel-head"><h3>Missões em destaque</h3><button class="text-btn" data-route="missions">Ver todas</button></div><div id="homeMissions" class="mission-grid"></div></article>
+            <article class="panel"><div class="panel-head"><h3>Próximas liberações</h3><button class="text-btn" data-route="profile">Meu Perfil</button></div><div id="unlockPreview" class="stack"></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="journeyView"><div class="panel"><div class="panel-head"><div><span class="tag">Jornada Bíblica</span><h2>Livros e divisões bíblicas</h2></div><button class="secondary" data-action="solo-modal">Quiz aleatório</button></div><p class="muted">Estude por testamento, livro, tema e dificuldade. Cada trilha ajuda a liberar títulos e molduras.</p><div id="journeyGrid" class="journey-grid"></div></div></section>
+        <section class="view" id="tournamentsView"><div class="panel"><div class="panel-head"><div><span class="tag">Campeonatos</span><h2>Eventos da mocidade</h2></div><button class="primary" id="newTournamentBtn">Criar campeonato</button></div><div id="tournamentList" class="card-list"></div></div></section>
+        <section class="view" id="reviewView"><div class="panel"><div class="panel-head"><div><span class="tag">Revisar Erros</span><h2>Perguntas para estudar</h2></div><button class="secondary" id="clearReviewBtn">Limpar revisão</button></div><p class="muted">As perguntas erradas aparecem aqui com resposta, explicação e referência.</p><div id="reviewList" class="card-list"></div></div></section>
+        <section class="view" id="missionsView"><div class="panel"><div class="panel-head"><div><span class="tag">Missões</span><h2>Diárias, semanais e permanentes</h2></div></div><div id="missionsList" class="mission-grid large"></div></div></section>
+        <section class="view" id="rankingView"><div class="panel"><div class="panel-head wrap"><div><span class="tag">Classificação Geral</span><h2>Global, semanal, mensal e desafios</h2></div><div class="inline-controls"><select id="rankingMode"><option value="points">Global</option><option value="weeklyPoints">Semanal</option><option value="monthlyPoints">Mensal</option><option value="competitiveWins">Desafios vencidos</option></select><button class="secondary" id="refreshRankingBtn">Atualizar</button></div></div><div id="rankingList" class="ranking-list"></div></div></section>
+        <section class="view" id="friendsView"><div class="panel"><div class="panel-head"><div><span class="tag">Amigos e Convites</span><h2>Convites e comunhão</h2></div></div><div class="inline-form"><input id="friendEmail" type="email" placeholder="email do irmão/irmã" /><button class="primary" id="sendFriendBtn">Enviar convite</button></div><div id="friendsList" class="card-list"></div></div></section>
+        <section class="view" id="profileView"><div class="profile-layout"><article class="panel profile-preview"><div class="avatar-frame"><img id="profileAvatar" src="assets/avatars/pergaminho.svg" alt="Imagem de perfil" /><img id="profileBorder" src="assets/borders/simples.svg" alt="Moldura" /></div><h2 id="profileName">Usuário</h2><p id="profileTitle">Novo Discípulo</p><small id="profileMeta">Nível 1 • 0 pontos</small></article><article class="panel"><div class="panel-head"><div><span class="tag">Meu Perfil</span><h2>Personalização com requisitos</h2></div></div><div class="settings-grid"><label>Nome público<input id="profileNameInput" /></label><label>Privacidade<select id="privacyMode"><option value="public">Aparecer na classificação</option><option value="friends">Somente amigos</option><option value="private">Privado</option></select></label><label>Foto<select id="avatarMode"><option value="preset">Imagem predefinida</option><option value="google">Foto da conta Google</option><option value="none">Sem foto</option></select></label></div><h3>Imagem de perfil</h3><div id="avatarChoices" class="choice-grid"></div><h3>Molduras</h3><div id="borderChoices" class="choice-grid"></div><h3>Títulos</h3><div id="titleChoices" class="choice-grid titles"></div><button class="primary full" id="saveProfileBtn">Salvar perfil</button></article></div></section>
+        <section class="view" id="adminView"><div class="panel"><div class="panel-head wrap"><div><span class="tag">Administração</span><h2>Painel de perguntas e revisão</h2></div><div class="quick-actions"><button class="secondary" id="syncQuestionsBtn">Enviar 1500 perguntas ao Firestore</button><button class="secondary" id="loadReportsBtn">Carregar reportes</button></div></div><p class="muted">Acesso por documento <code>admins/{uid}</code>. Cadastre perguntas novas pelo formulário ou cole um JSON completo. Novas perguntas entram ativas por padrão.</p><div class="admin-grid"><form id="adminQuestionForm" class="admin-form"><div class="settings-grid"><label>ID opcional<input id="adminQId" placeholder="ex: custom-atos-001"></label><label>Testamento<select id="adminQTestament"><option value="AT">Antigo Testamento</option><option value="NT">Novo Testamento</option></select></label><label>Livro<input id="adminQBook" placeholder="Ex: João"></label><label>Categoria<input id="adminQCategory" placeholder="Ex: Evangelhos"></label><label>Dificuldade<select id="adminQDifficulty"><option value="facil">Fácil</option><option value="medio">Médio</option><option value="dificil">Difícil</option><option value="extremo">Extremo</option></select></label><label>Referência<input id="adminQReference" placeholder="Ex: João 14:6"></label></div><label>Pergunta<textarea id="adminQQuestion" rows="3" placeholder="Digite o enunciado"></textarea></label><div class="settings-grid"><label>Alternativa A<input id="adminOpt0"></label><label>Alternativa B<input id="adminOpt1"></label><label>Alternativa C<input id="adminOpt2"></label><label>Alternativa D<input id="adminOpt3"></label></div><label>Resposta correta<select id="adminQAnswer"><option value="0">Alternativa A</option><option value="1">Alternativa B</option><option value="2">Alternativa C</option><option value="3">Alternativa D</option></select></label><label>Explicação<textarea id="adminQExplanation" rows="3" placeholder="Explique com respeito e cite o contexto"></textarea></label><div class="quick-actions"><button type="button" class="primary" id="addQuestionBtn">Cadastrar pergunta</button><button type="reset" class="secondary">Limpar</button></div></form><div class="stack"><h3>Cadastro por JSON</h3><textarea id="adminQuestionJson" rows="10" placeholder='{"question":"...","options":["...","...","...","..."],"answer":"..."}'></textarea><p class="muted">Se o JSON estiver preenchido, ele será usado no lugar do formulário.</p><h3>Reportes de perguntas</h3><div id="adminReports" class="card-list"></div></div></div></div></section>
+      </section>
+    </main>
+  </div>
+  <div id="modalRoot"></div>
+  <script type="module" src="src/js/app.js"></script>
+</body>
+</html>
