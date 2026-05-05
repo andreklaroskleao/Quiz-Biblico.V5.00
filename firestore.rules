@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isSelf(uid) { return signedIn() && request.auth.uid == uid; }
+    function isAdmin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function roomLeader(roomId) {
+      return signedIn() && get(/databases/$(database)/documents/rooms/$(roomId)).data.leader == request.auth.uid;
+    }
+
+    match /admins/{uid} {
+      allow read: if isSelf(uid) || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    match /users/{uid} {
+      allow create: if isSelf(uid);
+      allow read: if signedIn();
+      allow update: if isSelf(uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /questions/{questionId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /questionReports/{reportId} {
+      allow create: if signedIn()
+        && request.resource.data.reportedBy == request.auth.uid
+        && request.resource.data.status == 'open';
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /friendRequests/{requestId} {
+      allow create: if signedIn() && request.resource.data.from == request.auth.uid;
+      allow read: if signedIn() && (resource.data.from == request.auth.uid || resource.data.to == request.auth.uid || isAdmin());
+      allow update: if signedIn() && (resource.data.to == request.auth.uid || resource.data.from == request.auth.uid || isAdmin());
+      allow delete: if signedIn() && (resource.data.to == request.auth.uid || resource.data.from == request.auth.uid || isAdmin());
+    }
+
+    match /rooms/{roomId} {
+      allow create: if signedIn() && request.resource.data.leader == request.auth.uid;
+      allow read: if signedIn();
+      allow update: if signedIn() && (
+        resource.data.leader == request.auth.uid ||
+        request.auth.uid in resource.data.members ||
+        isAdmin()
+      );
+      allow delete: if isAdmin() || resource.data.leader == request.auth.uid;
+    }
+
+    match /tournaments/{tournamentId} {
+      allow create: if signedIn() && request.resource.data.createdBy == request.auth.uid;
+      allow read: if signedIn();
+      allow update: if signedIn();
+      allow delete: if isAdmin() || resource.data.createdBy == request.auth.uid;
+    }
+
+    match /scores/{scoreId} {
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow read: if signedIn();
+      allow update, delete: if isAdmin();
+    }
+  }
+}
